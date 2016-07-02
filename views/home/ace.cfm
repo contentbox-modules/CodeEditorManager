@@ -2,7 +2,8 @@
 <div class="full tab-pane active" id="ace">
     <fieldset>
         <legend><strong>Ace Code Editor</strong></legend>
-        <div class="control-group">
+
+        <div class="form-group">
             <div class="controls">
                 <cfset color = prc.Ace.active ? "success" : "danger">
                 <label class="btn btn-#color# btn-toggle" for="AceActive">
@@ -10,7 +11,8 @@
                 </label>
             </div>
         </div>
-        <div class="control-group">
+       
+        <div class="form-group">
             <label class="control-label" for="AceDefaultTheme">Default Theme:</label>
             <div class="controls">
                 <select name="AceDefaultTheme" id="AceDefaultTheme">
@@ -20,9 +22,10 @@
                 </select>
             </div>
         </div>  
-        <div class="control-group">
+       
+        <div class="form-group">
             <label class="control-label" for="AceThemes">Allowed Themes:</label>
-            <label class="btn btn-info btn-toggle" for="AceThemeCheckAll">
+            <label class="btn btn-info btn-toggle btn-sm" for="AceThemeCheckAll">
                 <input type="checkbox" id="AceThemeCheckAll" name="AceThemeCheckAll" /> Check/Uncheck All
             </label>
             <div class="controls">
@@ -46,7 +49,8 @@
                 </table>
             </div>
         </div>  
-        <div class="control-group">
+       
+        <div class="form-group">
             <label class="control-label" for="AceDefaultMode">Default Mode:</label>
             <div class="controls">
                 <select name="AceDefaultMode" id="AceDefaultMode">
@@ -56,9 +60,10 @@
                 </select>
             </div>
         </div>  
-        <div class="control-group">
+       
+        <div class="form-group">
             <label class="control-label" for="defaultMode">Allowed Modes:</label>
-            <label class="btn btn-info btn-toggle" for="AceModeCheckAll">
+            <label class="btn btn-info btn-toggle btn-sm" for="AceModeCheckAll">
                 <input type="checkbox" id="AceModeCheckAll" name="AceModeCheckAll" /> Check/Uncheck All
             </label>
             <div class="controls">

@@ -1,0 +1,43 @@
+{
+    "name":"ContentBox CodeEditor Manager",
+    "version":"2.0.0",
+    "slug":"CodeEditorManager",
+    "location" : "https://github.com/contentbox-modules/CodeEditorManager/archive/master.zip",
+    "author":"Ortus Solutions",
+    "homepage":"https://github.com/contentbox-modules/CodeEditorManager",
+    "documentation":"https://github.com/contentbox-modules/CodeEditorManager",
+    "repository":{
+        "type":"git",
+        "URL":"https://github.com/contentbox-modules/CodeEditorManager"
+    },
+    "bugs":"https://github.com/contentbox-modules/CodeEditorManager/issues",
+    "shortDescription":"Handy ContentBox module for including and configuring custom code editors.",
+    "description":"",
+    "instructions":"",
+    "changelog":"",
+    "type":"contentbox-modules",
+    "projectURL":"",
+    "license":[
+        {
+            "type":"Apache2",
+            "URL":"http://www.apache.org/licenses/LICENSE-2.0"
+        }
+    ],
+    "contributors":[
+        
+    ],
+    "dependencies":{
+        
+    },
+    "devDependencies":{
+        
+    },
+    "installPaths":{
+        
+    },
+    "ignore":[
+        "**/.*",
+        "tests",
+        "builds/**"
+    ]
+}

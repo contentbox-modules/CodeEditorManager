@@ -2,7 +2,8 @@
 <div class="full tab-pane" id="codemirror">
     <fieldset>
         <legend><strong>CodeMirror Editor</strong></legend>
-        <div class="control-group">
+       
+        <div class="form-group">
             <div class="controls">
                 <cfset color = prc.CodeMirror.active ? "success" : "danger">
                 <label class="btn btn-#color# btn-toggle" for="CodeMirrorActive">
@@ -10,7 +11,8 @@
                 </label>
             </div>
         </div>
-        <div class="control-group">
+       
+        <div class="form-group">
             <label class="control-label" for="CodeMirrorDefaultTheme">Default Theme:</label>
             <div class="controls">
                 <select name="CodeMirrorDefaultTheme" id="CodeMirrorDefaultTheme">
@@ -20,9 +22,10 @@
                 </select>
             </div>
         </div>  
-        <div class="control-group">
+       
+        <div class="form-group">
             <label class="control-label" for="CodeMirrorThemes">Allowed Themes:</label>
-            <label class="btn btn-info btn-toggle" for="CodeMirrorThemeCheckAll">
+            <label class="btn btn-info btn-toggle btn-sm" for="CodeMirrorThemeCheckAll">
                 <input type="checkbox" id="CodeMirrorThemeCheckAll" name="CodeMirrorThemeCheckAll" /> Check/Uncheck All
             </label>
             <div class="controls">
@@ -46,7 +49,8 @@
                 </table>
             </div>
         </div>  
-        <div class="control-group">
+       
+        <div class="form-group">
             <label class="control-label" for="CodeMirrorDefaultMode">Default Mode:</label>
             <div class="controls">
                 <select name="CodeMirrorDefaultMode" id="CodeMirrorDefaultMode">
@@ -56,9 +60,10 @@
                 </select>
             </div>
         </div>  
-        <div class="control-group">
+       
+        <div class="form-group">
             <label class="control-label" for="defaultMode">Allowed Modes:</label>
-            <label class="btn btn-info btn-toggle" for="CodeMirrorModeCheckAll">
+            <label class="btn btn-info btn-toggle btn-sm" for="CodeMirrorModeCheckAll">
                 <input type="checkbox" id="CodeMirrorModeCheckAll" name="CodeMirrorModeCheckAll" /> Check/Uncheck All
             </label>
             <div class="controls">

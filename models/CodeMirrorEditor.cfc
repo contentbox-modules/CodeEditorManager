@@ -1,34 +1,17 @@
 /**
-********************************************************************************
-ContentBox - A Modular Content Platform
-Copyright 2012 by Luis Majano and Ortus Solutions, Corp
-www.gocontentbox.org | www.luismajano.com | www.ortussolutions.com
-********************************************************************************
-Apache License, Version 2.0
-
-Copyright Since [2012] [Luis Majano and Ortus Solutions,Corp]
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-********************************************************************************
-* Simple textarea editor
+* ContentBox - A Modular Content Platform
+* Copyright since 2012 by Ortus Solutions, Corp
+* www.ortussolutions.com/products/contentbox
+* ---
+* Code Mirror Editor
 */
-component implements="contentbox.model.ui.editors.IEditor" accessors="true" singleton{
+component implements="contentbox.models.ui.editors.IEditor" accessors="true" singleton{
 
     // DI
-    property name="log"     inject="logbox:logger:{this}";
-    property name="html"    inject="coldbox:plugin:HTMLHelper";
-    property name="cb"      inject="cbHelper@cb";
-    property name="SettingService" inject="SettingService@cb";
+    property name="log"             inject="logbox:logger:{this}";
+    property name="html"            inject="HTMLHelper@coldbox";
+    property name="cb"              inject="cbHelper@cb";
+    property name="SettingService"  inject="SettingService@cb";
 
     settings = {
         "active" = false,
@@ -160,9 +143,12 @@ component implements="contentbox.model.ui.editors.IEditor" accessors="true" sing
         variables.coldbox   = arguments.coldbox;
         requestService      = arguments.coldbox.getRequestService();
         // mixin helper
-        helper = coldbox.getWireBox().getInstance( name="CodeEditorMixin", initArguments={
-            "editor" = this
-        });
+        helper = coldbox.getWireBox().getInstance( 
+            name="CodeEditorMixin@CodeEditorManager", 
+            initArguments={
+                "editor" = this
+            }
+        );
         // Store admin entry point and base URL settings
         ADMIN_ENTRYPOINT = arguments.coldbox.getSetting( "modules" )[ "contentbox-admin" ].entryPoint;
         
@@ -187,10 +173,11 @@ component implements="contentbox.model.ui.editors.IEditor" accessors="true" sing
     * Startup the editor(s) on a page
     */
     function startup(){
-        var moduleRoot = cb.getModuleSettings( "CodeEditorManager" ).mapping;
-        var js = "";
-        var defaultMode = "";
-        var defaultTheme = "";
+        var moduleRoot      = cb.getModuleConfig( "CodeEditorManager" ).mapping;
+        var js              = "";
+        var defaultMode     = "";
+        var defaultTheme    = "";
+
         // build out comboboxes for modes and themes
         savecontent variable="modes" {
             var modeCombo = "<label class='control-label' for=Mode>Language:</label>";
@@ -301,7 +288,7 @@ component implements="contentbox.model.ui.editors.IEditor" accessors="true" sing
     function loadAssets(){
         var js = "";
         var event = requestService.getContext();
-        var moduleRoot = cb.getModuleSettings( "CodeEditorManager" ).mapping;
+        var moduleRoot = cb.getModuleConfig( "CodeEditorManager" ).mapping;
         // only include if codemirror is active
         if( this.getSetting( "active" ) ) {
             // Loaad JS assets
