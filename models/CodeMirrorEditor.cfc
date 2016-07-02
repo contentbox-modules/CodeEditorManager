@@ -114,7 +114,6 @@ component implements="contentbox.models.ui.editors.IEditor" accessors="true" sin
             { name="Elegant", theme="elegant" },
             { name="Erlang Dark", theme="erlang-dark" },
             { name="Lesser Dark", theme="lesser-dark" },
-            { name="MBO", theme="mbo" },
             { name="Midnight", theme="midnight" },
             { name="Monokai", theme="monokai" },
             { name="Neat", theme="neat" },
@@ -122,8 +121,7 @@ component implements="contentbox.models.ui.editors.IEditor" accessors="true" sin
             { name="Paraiso Dark", theme="paraiso-dark" },
             { name="Paraiso Light", theme="paraiso-light" },
             { name="Rubyblue", theme="rubyblue" },
-            { name="Solarized Dark", theme="solarized dark" },
-            { name="Solarized Light", theme="solarized light" },
+            { name="Solarized", theme="solarized" },
             { name="The Matrix", theme="the-matrix" },
             { name="Tomorrow Night Eighties", theme="tomorrow-night-eighties" },
             { name="Twilight", theme="twilight" },
@@ -183,11 +181,14 @@ component implements="contentbox.models.ui.editors.IEditor" accessors="true" sin
             var modeCombo = "<label class='control-label' for=Mode>Language:</label>";
             modeCombo &= "<select name='Mode'>";
             var modes = this.getCustomModes();
-            html.addAsset("#moduleRoot#/includes/codemirror/js/mode/javascript/javascript.js");
-            html.addAsset("#moduleRoot#/includes/codemirror/js/mode/xml/xml.js");
-            html.addAsset("#moduleRoot#/includes/codemirror/js/mode/css/css.js");
-            html.addAsset("#moduleRoot#/includes/codemirror/js/mode/htmlmixed/htmlmixed.js");
-            html.addAsset("#moduleRoot#/includes/codemirror/js/mode/ruby/ruby.js");
+            
+            html.addAsset( "#moduleRoot#/includes/codemirror/js/lib/codemirror.js" );
+            html.addAsset( "#moduleRoot#/includes/codemirror/js/mode/javascript/javascript.js" );
+            html.addAsset( "#moduleRoot#/includes/codemirror/js/mode/xml/xml.js" );
+            html.addAsset( "#moduleRoot#/includes/codemirror/js/mode/css/css.js" );
+            html.addAsset( "#moduleRoot#/includes/codemirror/js/mode/htmlmixed/htmlmixed.js" );
+            html.addAsset( "#moduleRoot#/includes/codemirror/js/mode/ruby/ruby.js" );
+            
             for( var mode in modes ) {
                 if( this.getSetting( "defaultMode" ) == mode.mode ) {
                     modeCombo &= "<option selected=true value='#mode.mime#'>#mode.name#</option>";
@@ -197,11 +198,12 @@ component implements="contentbox.models.ui.editors.IEditor" accessors="true" sin
                     modeCombo &= "<option value='#mode.mime#'>#mode.name#</option>";
                 } 
                 if( mode.type != 'null' ) {
-                    html.addAsset("#moduleRoot#/includes/codemirror/js/mode/#mode.type#/#mode.type#.js");
+                    html.addAsset( "#moduleRoot#/includes/codemirror/js/mode/#mode.type#/#mode.type#.js"  );
                 }                
             }
             writeoutput( modeCombo );
         }
+
         savecontent variable="themes" {
             var themeCombo = "<label class='control-label' for=Theme>Theme:</label>";
             themeCombo &= "<select name='Theme'>";
@@ -225,53 +227,57 @@ component implements="contentbox.models.ui.editors.IEditor" accessors="true" sin
         savecontent variable="js"{
             writeOutput("
                 $content.before( '<div class=codemirror-wrapper><div id=codemirror-content-toolbar class=""codemirror-toolbar well well-small""></div>' );
+                
                 var toolbar = $( '##codemirror-content-toolbar' );
-                var editor = CodeMirror.fromTextArea($content[ 0 ], {
-                    mode: '#defaultMode#',
-                    lineNumbers: true,
-                    styleActiveLine: true,
-                    matchBrackets: true
+                $contentEditor = CodeMirror.fromTextArea( $content[ 0 ], {
+                    mode : '#defaultMode#',
+                    lineNumbers : true,
+                    styleActiveLine : true,
+                    matchBrackets : true
                 });
-                editor.setOption( 'theme', '#defaultTheme#' );
+                $contentEditor.setOption( 'theme', '#defaultTheme#' );
+                
                 var modeCombo = $( ""#modes#"" );
                 toolbar.append( modeCombo );
                 modeCombo.on( 'change', function() {
-                    editor.setOption( 'mode', $( this ).val() );
+                    $contentEditor.setOption( 'mode', $( this ).val() );
                 });
 
                 var themeCombo = $( ""#themes#"" );
                 toolbar.append( themeCombo );
                 themeCombo.on( 'change', function() {
-                    editor.setOption( 'theme', $( this ).val() );
+                    $contentEditor.setOption( 'theme', $( this ).val() );
                 });
-                editor.on( 'change', function( CodeMirror, e ) {
+
+                $contentEditor.on( 'change', function( CodeMirror, e ) {
                     CodeMirror.save();
                 })
+                
                 // if we have an excerpt
-                if( withExcerpt ){
+                if( $withExcerpt ){
                     $excerpt.before( '<div class=codemirror-wrapper><div id=codemirror-excerpt-toolbar class=""codemirror-toolbar well well-small""></div>' );
                     var toolbar = $( '##codemirror-excerpt-toolbar' );
-                    var editor2 = CodeMirror.fromTextArea($excerpt[ 0 ], {
+                    $excerptEditor = CodeMirror.fromTextArea($excerpt[ 0 ], {
                         mode: '#defaultMode#',
                         lineNumbers: true,
                         styleActiveLine: true,
                         matchBrackets: true
                     });
-                    editor2.setOption( 'theme', '#defaultTheme#' );
+                    $excerptEditor.setOption( 'theme', '#defaultTheme#' );
 
                     var modeCombo = $( ""#modes#"" ).clone();
                     toolbar.append( modeCombo );
                     modeCombo.on( 'change', function() {
-                        editor2.setOption( 'mode', $( this ).val() );
+                        $excerptEditor.setOption( 'mode', $( this ).val() );
                     });
 
                     var themeCombo = $( ""#themes#"" ).clone();
                     toolbar.append( themeCombo );
                     themeCombo.on( 'change', function() {
-                        editor2.setOption( 'theme', $( this ).val() );
+                        $excerptEditor.setOption( 'theme', $( this ).val() );
                     });
 
-                    editor2.on( 'change', function( CodeMirror, e ) {
+                    $excerptEditor.on( 'change', function( CodeMirror, e ) {
                         CodeMirror.save();
                     })
                 }
@@ -292,17 +298,48 @@ component implements="contentbox.models.ui.editors.IEditor" accessors="true" sin
         // only include if codemirror is active
         if( this.getSetting( "active" ) ) {
             // Loaad JS assets
-            html.addAsset("#moduleRoot#/includes/codemirror/js/lib/codemirror.css"); 
-            html.addAsset("#moduleRoot#/includes/codemirror/js/lib/codemirror.js");
-            html.addAsset("#moduleRoot#/includes/codemirror/css/codemirror.css");    
+            html.addAsset( "#moduleRoot#/includes/codemirror/js/lib/codemirror.js" );
+            html.addAsset( "#moduleRoot#/includes/codemirror/js/lib/codemirror.css" ); 
+            html.addAsset( "#moduleRoot#/includes/codemirror/css/codemirror.css" );    
+           
             // Required JS Functions
             savecontent variable="js"{
                 writeOutput("
+                function getContentEditor(){
+                    return $contentEditor;
+                }
+                function getExcerptEditor(){
+                    return $excerptEditor;
+                }
                 function checkIsDirty(){
                     return false;
                 }
                 function getEditorContent(){
                     return $( '##content' ).val();
+                }
+                function getEditorExcerpt(){
+                    return getExcerptEditor().getValue();
+                }
+
+                function updateEditorContent(){
+                    
+                }
+                function updateEditorExcerpt(){
+                    
+                }
+                function setEditorContent( editorName, content ){
+                    if( editorName === 'content' ){
+                        $contentEditor.setValue( content );
+                    } else {
+                        $excerptEditor.setValue( content );
+                    }
+                }
+                function insertEditorContent( editorName, content ){
+                    if( editorName === 'content' ){
+                        $contentEditor.replaceRange( content, $contentEditor.getCursor() );
+                    } else {
+                        $excerptEditor.replaceRange( content, $excerptEditor.getCursor() );
+                    }
                 }
                 ");
             }

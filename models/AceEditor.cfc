@@ -235,62 +235,66 @@ component implements="contentbox.models.ui.editors.IEditor" accessors="true" sin
         // withExcerpt - an argument telling us if an excerpt is available to render or not
         savecontent variable="js"{
             writeOutput("
+                
                 // add div for Ace editor
                 var val = $content.val();
                 $content.before( '<div class=ace-wrapper><div id=ace-content-toolbar class=""ace-toolbar well well-small""></div><div id=content_ace  class=""ace-area full""></div></div>' );
                 var toolbar = $( '##ace-content-toolbar' );
+                
                 // hide textarea
                 $content.hide();
+                
                 // init new editor
-                var editor = ace.edit( 'content_ace' );
-                    editor.setValue( val );
-                    editor.setTheme( '#defaultTheme#' );
-                    editor.getSession().setMode( '#defaultMode#' );
-                    // add change event so we can still use the textarea value
-                    editor.getSession().on('change', function(e) {
-                        $content.val( editor.getSession().getValue() );
-                    });
-                    editor.setShowPrintMargin( false );
+                $contentEditor = ace.edit( 'content_ace' );
+                $contentEditor.setValue( val );
+                $contentEditor.setTheme( '#defaultTheme#' );
+                $contentEditor.getSession().setMode( '#defaultMode#' );
+                // add change event so we can still use the textarea value
+                $contentEditor.getSession().on('change', function(e) {
+                    $content.val( $contentEditor.getSession().getValue() );
+                });
+                $contentEditor.setShowPrintMargin( false );
 
                 var modeCombo = $( ""#modes#"" );
                 toolbar.append( modeCombo );
                 modeCombo.on( 'change', function() {
-                    editor.getSession().setMode( $( this ).val() );
+                    $contentEditor.getSession().setMode( $( this ).val() );
                 });
 
                 var themeCombo = $( ""#themes#"" );
                 toolbar.append( themeCombo );
                 themeCombo.on( 'change', function() {
-                    editor.setTheme( $( this ).val() );
+                    $contentEditor.setTheme( $( this ).val() );
                 });
+
                 // if we have an excerpt
-                if( withExcerpt ){
+                if( $withExcerpt ){
                     var val = $excerpt.val();
                     $excerpt.before( '<div class=ace-wrapper><div id=ace-excerpt-toolbar class=""ace-toolbar well well-small""></div><div id=content_ace_excerpt class=""ace-area excerpt""></div></div>' );
                     var toolbar = $( '##ace-excerpt-toolbar' );
                     // hide textarea
                     $excerpt.hide();
                     // init new editor
-                    var Eeditor = ace.edit( 'content_ace_excerpt' );
-                        Eeditor.setValue( val );
-                        Eeditor.setTheme( '#defaultTheme#' );
-                        Eeditor.getSession().setMode( '#defaultMode#' );
-                        Eeditor.setShowPrintMargin( false );
-                        // add change event so we can still use the textarea value
-                        Eeditor.getSession().on('change', function(e) {
-                            $excerpt.val( Eeditor.getSession().getValue() );
-                        });
+                    $excerptEditor = ace.edit( 'content_ace_excerpt' );
+                    $excerptEditor.setValue( val );
+                    $excerptEditor.setTheme( '#defaultTheme#' );
+                    $excerptEditor.getSession().setMode( '#defaultMode#' );
+                    $excerptEditor.setShowPrintMargin( false );
+                    // add change event so we can still use the textarea value
+                    $excerptEditor.getSession().on('change', function(e) {
+                        $excerpt.val( $excerptEditor.getSession().getValue() );
+                    });
 
                     var modeCombo = $( ""#modes#"" ).clone();
                     toolbar.append( modeCombo );
                     modeCombo.on( 'change', function() {
-                        Eeditor.getSession().setMode( $( this ).val() );
+                        $excerptEditor.getSession().setMode( $( this ).val() );
                     });
 
                     var themeCombo = $( ""#themes#"" ).clone();
                     toolbar.append( themeCombo );
                     themeCombo.on( 'change', function() {
-                        Eeditor.setTheme( $( this ).val() );
+                        $excerptEditor.setTheme( $( this ).val() );
                     });
                 }
             ");
@@ -315,11 +319,41 @@ component implements="contentbox.models.ui.editors.IEditor" accessors="true" sin
             // Required JS Functions
             savecontent variable="js"{
                 writeOutput("
+                function getContentEditor(){
+                    return $contentEditor;
+                }
+                function getExcerptEditor(){
+                    return $excerptEditor;
+                }
                 function checkIsDirty(){
                     return false;
                 }
                 function getEditorContent(){
                     return $( '##content' ).val();
+                }
+                function getEditorExcerpt(){
+                    return getExcerptEditor().getValue();
+                }
+
+                function updateEditorContent(){
+                    
+                }
+                function updateEditorExcerpt(){
+                    
+                }
+                function setEditorContent( editorName, content ){
+                    if( editorName === 'content' ){
+                        $contentEditor.setValue( content );
+                    } else {
+                        $excerptEditor.setValue( content );
+                    }
+                }
+                function insertEditorContent( editorName, content ){
+                    if( editorName === 'content' ){
+                        $contentEditor.replaceRange( content, $contentEditor.getCursor() );
+                    } else {
+                        $excerptEditor.replaceRange( content, $excerptEditor.getCursor() );
+                    }
                 }
                 ");
             }
